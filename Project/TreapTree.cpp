@@ -31,7 +31,8 @@ TreapTree::Node* TreapTree::leftRotate(TreapTree::Node* parent) {
 	return temp;
 }
 
-void TreapTree::insert(string* val) {
+void 
+TreapTree::insert(string* val) {
 	Node* n = insert(root, val);
 	root = n;
 }
@@ -52,11 +53,13 @@ TreapTree::Node* TreapTree::insert(TreapTree::Node* currentNode, string* val) {
 	return currentNode;
 }
 
-void TreapTree::printInOrder() {
+void 
+TreapTree::printInOrder() {
 	printInOrder(root);
 }
 
-void TreapTree::printInOrder(TreapTree::Node* current) {
+void 
+TreapTree::printInOrder(TreapTree::Node* current) {
 	if (current != nullptr) {
 		printInOrder(current->leftChild);
 		cout << *current->user << " ";
@@ -64,7 +67,8 @@ void TreapTree::printInOrder(TreapTree::Node* current) {
 	}
 }
 
-string* TreapTree::search(TreapTree::Node* currentNode, string val) {
+string* 
+TreapTree::search(TreapTree::Node* currentNode, string val) {
 	if (currentNode == nullptr)
 		return nullptr;
 	// change *(currentNode->user) to currentNode->user->username
@@ -78,12 +82,14 @@ string* TreapTree::search(TreapTree::Node* currentNode, string val) {
 }
 
 
-void TreapTree::deleteUser(string val) {
+void 
+TreapTree::deleteUser(string val) {
 	Node* n = deleteUser(root, val);
 	root = n;
 }
 
-TreapTree::Node* TreapTree::deleteUser(TreapTree::Node* currentNode, string val) {
+TreapTree::Node* 
+TreapTree::deleteUser(TreapTree::Node* currentNode, string val) {
 	if (currentNode == nullptr)
 		return nullptr;
 
@@ -118,7 +124,8 @@ TreapTree::Node* TreapTree::deleteUser(TreapTree::Node* currentNode, string val)
 }
 
 
-void TreapTree::print2DUtil(Node* root, int space)
+void 
+TreapTree::print2DUtil(Node* root, int space)
 {
 	// Base case
 	if (root == NULL)
@@ -142,13 +149,15 @@ void TreapTree::print2DUtil(Node* root, int space)
 }
 
 // Wrapper over print2DUtil()
-void TreapTree::print2D(Node* root)
+void 
+TreapTree::print2D(Node* root)
 {
 	// Pass initial space count as 0
 	print2DUtil(root, 0);
 }
 
-void TreapTree::print2D()
+void 
+TreapTree::print2D()
 {
 	print2D(root);
 }

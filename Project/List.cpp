@@ -1,47 +1,38 @@
 #include "List.h"
 
-ListNode::ListNode() : username(""), name(""), email(""), next(nullptr), previous(nullptr) {}
+ListNode::ListNode() {}
 
-ListNode::ListNode(string un, string n, string e) : username(un), name(n), email(e), next(nullptr), previous(nullptr) {}
+ListNode::ListNode(User* u) : user(u), next(nullptr), previous(nullptr) {}
 
-string ListNode::getUsername() {
-	return username;
-}
 
-string ListNode::getName() {
-	return name;
-}
-
-string ListNode::getEmail() {
-	return email;
-}
-
-void ListNode::setUsername(string un) {
-	username = un;
-}
-
-void ListNode::setName(string n) {
-	name = n;
-}
-
-void ListNode::setEmail(string e) {
-	email = e;
-}
-
-ListNode* ListNode::getNext() {
+ListNode* 
+ListNode::getNext() {
 	return next;
 }
 
-ListNode* ListNode::getPrev() {
+ListNode* 
+ListNode::getPrev() {
 	return previous;
 }
 
-void ListNode::setNext(ListNode* nxt) {
+User* 
+ListNode::getUser() {
+	return user;
+}
+
+void 
+ListNode::setNext(ListNode* nxt) {
 	next = nxt;
 }
 
-void ListNode::setPrev(ListNode* prev) {
+void 
+ListNode::setPrev(ListNode* prev) {
 	previous = prev;
+}
+
+void 
+ListNode::setUser(User* u) {
+	user = u;
 }
 
 List::List() : head(nullptr), tail(nullptr), dummyNode(nullptr), size(0) {}
@@ -55,17 +46,18 @@ List::~List() {
 	size = 0;
 }
 
-int List::getSize() const {
+int 
+List::getSize() const {
 	return size;
 }
 
-void List::insert(string username, string name, string email) //Inserting at the end of the Linked List
-{
-	ListNode* newNode = new ListNode(username, name, email);
+void 
+List::insert(User* user) {
+	ListNode* newNode = new ListNode(user);
 	ListNode* temp = head;
 	bool flag = false;
 	while (temp != dummyNode) {
-		if (newNode->getUsername() == temp->getUsername()) {
+		if (newNode->getUser()->getUsername() == temp->getUser()->getUsername()) {
 			flag = true;
 			break;
 		}
@@ -91,14 +83,19 @@ void List::insert(string username, string name, string email) //Inserting at the
 	}
 	else
 		cout << "This username is already taken.\n";
-
 }
 
-void List::erase(string username)
-{
+void 
+List::insert(string username, string name, string email) {//Inserting at the end of the Linked List 
+	User* user = new User(username, name, email);
+	insert(user);
+}
+
+void 
+List::erase(string username) {
 	ListNode* temp = head;
 	while (temp != dummyNode) {
-		if (temp->getUsername() == username) {
+		if (temp->getUser()->getUsername() == username) {
 			if (temp == head) {
 				head = temp->getNext();
 				head->setPrev(nullptr);
@@ -119,38 +116,14 @@ void List::erase(string username)
 	}
 }
 
-ListNode* List::search(string username) const
-{
+User* 
+List::search(string username) const {
 	ListNode* temp = head;
 	bool flag = false;
 	while (temp != dummyNode) {
-		if (temp->getUsername() == username)
-			return temp;
+		if (temp->getUser()->getUsername() == username)
+			return temp->getUser();
 		temp = temp->getNext();
 	}
-	return new ListNode(); //Dummy node with username = ""
+	return nullptr;
 }
-
-//string List::iterator::operator*() const {
-//	return string();
-//}
-//
-//void List::iterator::operator++() {
-//}
-//
-//void List::iterator::operator++(int) {
-//}
-//
-//void List::iterator::operator--() {
-//}
-//
-//void List::iterator::operator--(int) {
-//}
-//
-//bool List::iterator::operator==(const iterator& itr) {
-//	return false;
-//}
-//
-//bool List::iterator::operator!=(const iterator& itr) {
-//	return false;
-//}
