@@ -1,64 +1,154 @@
-////
-//// Created by andre on 11/7/2021.
-////
+/*
+* @author Andrew Naseif          20190114   S28
+* @author Mark Samir Fawzy       20190401   S10
+* @author Kareem Mohamed Morsy   20190386   S9
+* Created on 9/7/2021
+*/
 #include "TreapTree.h"
+#include <cstdlib>
 
-TreapTree::node *TreapTree::node::newNode(string name) {
-    node *currentNode = new node();
-    currentNode->userName = name;
-    currentNode->priority=0;
-    currentNode->leftChild = nullptr;
-    currentNode->rightChild = nullptr;
-    return (currentNode);
+TreapTree::Node::Node(string* user) {
+	this->user = user;
+	priority = rand() % 1000;
+	leftChild = nullptr;
+	rightChild = nullptr;
 }
 
-TreapTree::node *TreapTree::rightRotate(TreapTree::node *parent) {
-    node *dummy = parent->leftChild;
-    node *temp = dummy->rightChild;
-    dummy->rightChild = parent;
-    parent->leftChild = temp;
-    return dummy;
-}
-TreapTree::node *TreapTree::leftRotate(TreapTree::node *parent) {
-    node *temp = parent->rightChild;
-    node *temp2 = temp->leftChild;
-    //Perform rotation
-    temp->leftChild = parent;
-    parent->rightChild = temp2;
-    return temp;
+TreapTree::Node* TreapTree::rightRotate(TreapTree::Node* parent) {
+	Node* dummy = parent->leftChild;
+	Node* temp = dummy->rightChild;
+	dummy->rightChild = parent;
+	parent->leftChild = temp;
+	return dummy;
 }
 
-TreapTree::node *TreapTree::insert(TreapTree::node *currentNode, string val) {
-    if (currentNode == nullptr)
-        return (newNode(val));
-    if (val < currentNode->userName) {
-        currentNode->leftChild = insert(currentNode->leftChild);
-        if (currentNode->leftChild->priority > currentNode->priority)
-            currentNode = rightRotate(currentNode);
-    } else {
-        currentNode->rightChild = insert(currentNode->rightChild);
-        if (currentNode->rightChild->priority > currentNode->priority)
-            currentNode = leftRotate(currentNode);
-    }
-    return currentNode;
+TreapTree::Node* TreapTree::leftRotate(TreapTree::Node* parent) {
+	Node* temp = parent->rightChild;
+	Node* temp2 = temp->leftChild;
+	//Perform rotation
+	temp->leftChild = parent;
+	parent->rightChild = temp2;
+	return temp;
 }
 
-void TreapTree::printInOrder(TreapTree::node *current) {
-    if (current != nullptr) {
-        printInOrder(current->leftChild);
-        cout << current->userName << " ";
-        printInOrder(current->rightChild);
-    } else {
-        return;
-    }
+void TreapTree::insert(string* val) {
+	Node* n = insert(root, val);
+	root = n;
 }
-//TreapTree::node *TreapTree::search(TreapTree::node *currentNode, string val) {
-//    if (currentNode == nullptr || currentNode->userName == val)
-//       return currentNode;
-//    if (currentNode->userName < val)
-//        return search(currentNode->rightChild, val);
-//    return search(currentNode->leftChild, val);
-//}
+
+TreapTree::Node* TreapTree::insert(TreapTree::Node* currentNode, string* val) {
+	if (currentNode == nullptr)
+		return (new Node(val));
+	if (val < currentNode->user) {
+		currentNode->leftChild = insert(currentNode->leftChild, val);
+		if (currentNode->leftChild->priority > currentNode->priority)
+			currentNode = rightRotate(currentNode);
+	}
+	else {
+		currentNode->rightChild = insert(currentNode->rightChild, val);
+		if (currentNode->rightChild->priority > currentNode->priority)
+			currentNode = leftRotate(currentNode);
+	}
+	return currentNode;
+}
+
+void TreapTree::printInOrder() {
+	printInOrder(root);
+}
+
+void TreapTree::printInOrder(TreapTree::Node* current) {
+	if (current != nullptr) {
+		printInOrder(current->leftChild);
+		cout << *current->user << " ";
+		printInOrder(current->rightChild);
+	}
+}
+
+string* TreapTree::search(TreapTree::Node* currentNode, string val) {
+	if (currentNode == nullptr)
+		return nullptr;
+	// change *(currentNode->user) to currentNode->user->username
+	else if (*(currentNode->user) == val)
+		return currentNode->user;
+	// change *(currentNode->user) to currentNode->user->username
+	else if (*(currentNode->user) < val)
+		return search(currentNode->rightChild, val);
+	else
+		return search(currentNode->leftChild, val);
+}
 
 
+void TreapTree::deleteUser(string val) {
+	Node* n = deleteUser(root, val);
+	root = n;
+}
 
+TreapTree::Node* TreapTree::deleteUser(TreapTree::Node* currentNode, string val) {
+	if (currentNode == nullptr)
+		return nullptr;
+
+	// change *currentNode->user to currentNode->user->username
+	if (val < *currentNode->user)
+		currentNode->leftChild = deleteUser(currentNode->leftChild, val);
+	// change *currentNode->user to currentNode->user->username
+	else if (val > *currentNode->user)
+		currentNode->rightChild = deleteUser(currentNode->rightChild, val);
+	// If one child is null
+	else if (currentNode->leftChild == nullptr) {
+		Node* temp = currentNode->rightChild;
+		delete currentNode;
+		currentNode = temp;
+	}
+	else if (currentNode->rightChild == nullptr) {
+		Node* temp = currentNode->leftChild;
+		delete currentNode;
+		currentNode = temp;
+	}
+	// If both children are not null
+	else if (currentNode->leftChild->priority > currentNode->rightChild->priority) {
+		currentNode = rightRotate(currentNode);
+		currentNode->rightChild = deleteUser(root->rightChild, val);
+	}
+	else if (currentNode->leftChild->priority < currentNode->rightChild->priority) {
+		currentNode = leftRotate(currentNode);
+		currentNode->rightChild = deleteUser(root->leftChild, val);
+	}
+
+	return currentNode;
+}
+
+
+void TreapTree::print2DUtil(Node* root, int space)
+{
+	// Base case
+	if (root == NULL)
+		return;
+
+	// Increase distance between levels
+	space += 2;
+
+	// Process right child first
+	print2DUtil(root->rightChild, space);
+
+	// Print current node after space
+	// count
+	cout << endl;
+	for (int i = 2; i < space; i++)
+		cout << " ";
+	cout << *root->user << "\n";
+
+	// Process left child
+	print2DUtil(root->leftChild, space);
+}
+
+// Wrapper over print2DUtil()
+void TreapTree::print2D(Node* root)
+{
+	// Pass initial space count as 0
+	print2DUtil(root, 0);
+}
+
+void TreapTree::print2D()
+{
+	print2D(root);
+}

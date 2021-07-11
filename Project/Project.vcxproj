@@ -142,9 +142,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="List.cpp" />
+    <ClCompile Include="TreapTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="List.h" />
+    <ClInclude Include="TreapTree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
