@@ -6,8 +6,9 @@
 */
 #include "TreapTree.h"
 #include <cstdlib>
+#include "User.h"
 
-TreapTree::Node::Node(string* user) {
+TreapTree::Node::Node(User* user) {
 	this->user = user;
 	priority = rand() % 1000;
 	leftChild = nullptr;
@@ -32,15 +33,15 @@ TreapTree::Node* TreapTree::leftRotate(TreapTree::Node* parent) {
 }
 
 void 
-TreapTree::insert(string* val) {
+TreapTree::insert(User* val) {
 	Node* n = insert(root, val);
 	root = n;
 }
 
-TreapTree::Node* TreapTree::insert(TreapTree::Node* currentNode, string* val) {
+TreapTree::Node* TreapTree::insert(TreapTree::Node* currentNode, User* val) {
 	if (currentNode == nullptr)
 		return (new Node(val));
-	if (val < currentNode->user) {
+	if (val->getUsername() < currentNode->user->getUsername()) {
 		currentNode->leftChild = insert(currentNode->leftChild, val);
 		if (currentNode->leftChild->priority > currentNode->priority)
 			currentNode = rightRotate(currentNode);
@@ -62,20 +63,24 @@ void
 TreapTree::printInOrder(TreapTree::Node* current) {
 	if (current != nullptr) {
 		printInOrder(current->leftChild);
-		cout << *current->user << " ";
+		cout << current->user->getUsername() << " ";
 		printInOrder(current->rightChild);
 	}
 }
 
-string* 
+User*
+TreapTree::search(string val) {
+	return search(root, val);
+}
+
+User* 
 TreapTree::search(TreapTree::Node* currentNode, string val) {
 	if (currentNode == nullptr)
 		return nullptr;
-	// change *(currentNode->user) to currentNode->user->username
-	else if (*(currentNode->user) == val)
+	else if (currentNode->user->getUsername() == val)
 		return currentNode->user;
 	// change *(currentNode->user) to currentNode->user->username
-	else if (*(currentNode->user) < val)
+	else if (currentNode->user->getUsername() < val)
 		return search(currentNode->rightChild, val);
 	else
 		return search(currentNode->leftChild, val);
@@ -93,11 +98,9 @@ TreapTree::deleteUser(TreapTree::Node* currentNode, string val) {
 	if (currentNode == nullptr)
 		return nullptr;
 
-	// change *currentNode->user to currentNode->user->username
-	if (val < *currentNode->user)
+	if (val < currentNode->user->getUsername())
 		currentNode->leftChild = deleteUser(currentNode->leftChild, val);
-	// change *currentNode->user to currentNode->user->username
-	else if (val > *currentNode->user)
+	else if (val > currentNode->user->getUsername())
 		currentNode->rightChild = deleteUser(currentNode->rightChild, val);
 	// If one child is null
 	else if (currentNode->leftChild == nullptr) {
@@ -142,7 +145,7 @@ TreapTree::print2DUtil(Node* root, int space)
 	cout << endl;
 	for (int i = 2; i < space; i++)
 		cout << " ";
-	cout << *root->user << "\n";
+	cout << root->user->getUsername() << "\n";
 
 	// Process left child
 	print2DUtil(root->leftChild, space);

@@ -1,5 +1,5 @@
 #pragma once
-#include<iostream>
+#include <iostream>
 #include "TreapTree.h"
 using namespace std;
 
