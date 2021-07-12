@@ -1,4 +1,5 @@
 #include "User.h"
+#include "TreapTree.h"
 
 User::User(string un, string n, string e) : username(un), name(n), email(e) {}
 

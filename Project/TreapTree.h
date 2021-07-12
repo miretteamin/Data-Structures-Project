@@ -1,26 +1,33 @@
-//
-// Created by andre on 11/7/2021.
-//
-#include <iostream>
-
+/*
+* @author Andrew Naseif          20190114   S28
+* @author Mark Samir Fawzy       20190401   S10
+* @author Kareem Mohamed Morsy   20190386   S9
+* Created on 9/7/2021
+*/
 #ifndef TREAP_TREAPTREE_H
 #define TREAP_TREAPTREE_H
+#include <iostream>
+
 using namespace std;
+
+// This line is to resolve the circular dependency problem
+// https://pvigier.github.io/2018/02/09/dependency-graph.html
+class User;
 
 class TreapTree {
 private:
 	class Node {
 	public:
-		string* user;
+		User* user;
 		int priority;
-		//Node* to user
 		Node* leftChild;
 		Node* rightChild;
-		Node(string* name);
+		Node(User* user);
 	};
 	Node* rightRotate(Node* parent);
 	Node* leftRotate(Node* parent);
-	Node* insert(Node* currentNode, string* val);
+	User* search(Node* currentNode, string val);
+	Node* insert(Node* currentNode, User* val);
 	Node* deleteUser(Node* currentNode, string val);
 	void printInOrder(Node* current);
 	void print2DUtil(Node* root, int space);
@@ -28,8 +35,8 @@ private:
 
 public:
 	Node* root = nullptr;
-	string* search(Node* currentNode, string val);
-	void insert(string* val);
+	User* search(string val);
+	void insert(User* val);
 	void deleteUser(string val);
 	void printInOrder();
 	void print2D();

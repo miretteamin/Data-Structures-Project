@@ -1,20 +1,19 @@
 #include <iostream>
 #include "TreapTree.h"
+#include "User.h"
 using namespace std;
 
 int main()
 {
 	ios::sync_with_stdio(false), cin.tie(), cout.tie();
-	string arr[100];
-	for (int i = 0; i < 50; i++)
-	{
-		arr[i] = " ";
-		arr[i][0] = (char)i + 48;
-	}
 	TreapTree t;
 	for (int i = 0; i < 50; i++)
 	{
-		t.insert(arr + i);
+		User* u = new User("", "", "");
+		string s = " ";
+		s[0] = (char)i + 48;
+		u->setUsername(s);
+		t.insert(u);
 	}
 
 	t.print2D();
