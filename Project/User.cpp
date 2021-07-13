@@ -35,3 +35,7 @@ User::setEmail(string e) {
 	email = e;
 }
 
+TreapTree &User::getFriends() {
+    return friends;
+}
+

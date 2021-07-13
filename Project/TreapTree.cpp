@@ -63,7 +63,7 @@ void
 TreapTree::printInOrder(TreapTree::Node* current) {
 	if (current != nullptr) {
 		printInOrder(current->leftChild);
-		cout << current->user->getUsername() << " ";
+		cout << current->user->getUsername() << ", " << current->user->getName() << "\n";
 		printInOrder(current->rightChild);
 	}
 }

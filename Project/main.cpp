@@ -120,8 +120,8 @@ int main()
         User *u = users.search(i[0]);
         User *u1 = users.search(i[1]);
 
-        u->friends.insert(u1);
-        u1->friends.insert(u);
+        u->getFriends().insert(u1);
+        u1->getFriends().insert(u);
     }
 
     while(true){
@@ -141,22 +141,31 @@ int main()
             string userChoice;
             cin >> userChoice;
             if(userChoice == "1"){
-                loggedInUser->friends.printInOrder();
+                loggedInUser->getFriends().printInOrder();
                 cout << '\n';
             }else if (userChoice=="2"){
                 cout << "Enter the username: " ;
                 string usernameSearch ;
                 cin >> usernameSearch;
-                User *hisFriend = loggedInUser->friends.search(usernameSearch);
+                User *hisFriend = loggedInUser->getFriends().search(usernameSearch);
                 if (hisFriend == nullptr ) {
-                    cout << "you have no such friend" <<endl;
+                    cout << "not found" <<endl;
                 }
 
-                cout << hisFriend->getUsername() << " " << hisFriend->getName() << '\n';
+                cout << hisFriend->getUsername() << ", " << hisFriend->getName() << ", " << hisFriend->getEmail() << '\n';
 
             }else if (userChoice == "3"){
                 cout << "Enter your friend's username\n" ;
-
+                string fusername;
+                cin >> fusername;
+                User *u =  users.search(fusername);
+                if (u== nullptr){
+                    cout << "user not found" <<endl;
+                }else{
+                    loggedInUser->getFriends().insert(u);
+                    u->getFriends().insert(loggedInUser);
+                    cout << "you are now friends" <<endl;
+                }
             }else if (userChoice =="4"){
 
             }else if (userChoice == "5"){
