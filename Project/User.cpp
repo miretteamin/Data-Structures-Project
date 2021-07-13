@@ -1,7 +1,9 @@
 #include "User.h"
 #include "TreapTree.h"
 
-User::User(string un, string n, string e) : username(un), name(n), email(e) {}
+User::User(string un, string n, string e) : username(un), name(n), email(e) {
+    friends = TreapTree();
+}
 
 string 
 User::getUsername() {

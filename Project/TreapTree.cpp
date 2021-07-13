@@ -68,6 +68,7 @@ TreapTree::printInOrder(TreapTree::Node* current) {
 	}
 }
 
+
 User*
 TreapTree::search(string val) {
 	return search(root, val);

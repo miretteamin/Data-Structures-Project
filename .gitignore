@@ -1,6 +1,5 @@
 # Prerequisites
 *.d
-
 # Compiled Object files
 *.slo
 *.lo
@@ -31,7 +30,8 @@
 *.out
 *.app
 
-
+\cmake-build-debug
+\.idea
 \.vs
 \debug
 \project\Debug

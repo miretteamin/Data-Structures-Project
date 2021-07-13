@@ -7,8 +7,8 @@ class User
 {
 private:
 	string username, name, email;
-	TreapTree friends;
 public:
+    TreapTree friends;
 	User(string un, string n, string e);
 	string getUsername();
 	string getName();
