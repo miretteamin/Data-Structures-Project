@@ -109,7 +109,7 @@ int main()
     loadInFile(fs, usersFile2DVector,3);
     List users;
     fs.close();
-    for (int i=0;i<9;i++){
+    for (int i=0;i<nLines;i++){
          User *u =  new User(usersFile2DVector[i][0],usersFile2DVector[i][1],usersFile2DVector[i][2]);
          users.insert(u);
     }
@@ -123,7 +123,7 @@ int main()
 
     fs2.close();
 
-    for (int i=0;i<6;i++){
+    for (int i=0;i<nLines;i++){
         User *u = users.search(usersRelations2DVector[i][0]);
         User *u1 = users.search(usersRelations2DVector[i][1]);
         u->getFriends().insert(u1);
