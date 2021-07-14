@@ -7,24 +7,40 @@
 
 using namespace std;
 
+int getNLines(const string& filePath){
+  fstream  in;
+  in.open(filePath);
+  string tmp;
+  int counter =0;
+  while (!in.eof()) {
+        getline(in, tmp);
+        tmp.clear();
+        counter +=1;
+  }
+  in.close();
+  return counter;
+}
 
 
-string ltrim(const string &s)
+string rLeadingSpaces(const string& s)
 {
-    string WHITESPACE = " \n\r\t\f\v";
+//    string WHITESPACE = " \n\r\t\f\v";
+    string WHITESPACE =" \n";
     size_t start = s.find_first_not_of(WHITESPACE);
     return (start == string::npos) ? "" : s.substr(start);
 }
 
-string rtrim(const string &s)
+string rTrailingSpaces(const string& s)
 {
-    string WHITESPACE = " \n\r\t\f\v";
+//    string WHITESPACE = " \n\r\t\f\v";
+    string WHITESPACE =" \n";
+
     size_t end = s.find_last_not_of(WHITESPACE);
     return (end == string::npos) ? "" : s.substr(0, end + 1);
 }
 
-string trim(const string &s) {
-    return rtrim(ltrim(s));
+string trim(const string& s) {
+    return rTrailingSpaces(rLeadingSpaces(s));
 }
 
 
@@ -37,23 +53,25 @@ void userMenu(){
             "6- logout\n";
 }
 
-void splitLine(const string& s, char c, vector<string> &v) {
+void splitLine(const string& s, char c, string *v) {
     int i = 0;
     int j = (int)s.find(c);
-
+    int counter =0;
     while (j >= 0) {
         string str = s.substr(i, j-i);
-        v.push_back(str);
+        v[counter] = str;
+        counter +=1;
         i = ++j;
         j = (int)s.find(c, j);
         if (j < 0) {
-            v.push_back(trim(s.substr(i, s.length())));
+            v[counter] = trim(s.substr(i, s.length()));
+            counter +=1;
         }
     }
 }
 
 
-void loadInFile(ifstream& in, vector<vector<string>>& data) {
+void loadInFile(ifstream& in, string  **data,int nColumns) {
 
     string tmp;
 
@@ -61,14 +79,16 @@ void loadInFile(ifstream& in, vector<vector<string>>& data) {
         cout << "wrong path" <<endl;
         return;
     }
+    int counter =0;
     while (!in.eof()) {
         getline(in, tmp);
 //        cout << tmp <<endl;
-        vector<string> p ;
-
+        string *p = new string[nColumns] ;
         splitLine(tmp, ',', p);
+//        cout << p[0] << " "  << p[1] <<  <<endl;
+        data[counter] = p ;
+        counter+=1;
 
-        data.push_back(p);
 
         tmp.clear();
     }
@@ -95,31 +115,31 @@ int main()
 
     ifstream fs;
 
-    vector<vector<string>> usersFile2DVector;
-
+//    int nLines = getNLines("..\\Project\\users.in");
+    int  nLines =9;
+    string  **usersFile2DVector = new string*[nLines];
 
     fs.open("..\\Project\\users.in");
-    loadInFile(fs, usersFile2DVector);
+    loadInFile(fs, usersFile2DVector,3);
     List users;
     fs.close();
-    for (auto & i : usersFile2DVector){
-         User *u =  new User(i[0],i[1],i[2]);
+    for (int i=0;i<9;i++){
+         User *u =  new User(usersFile2DVector[i][0],usersFile2DVector[i][1],usersFile2DVector[i][2]);
          users.insert(u);
     }
 
     ifstream fs2 ;
 
     fs2.open("..\\Project\\usersrelations.in");
-    vector<vector<string>> usersRelationsFile2DVector;
+    string **usersRelations2DVector =  new string*[6];
 
-    loadInFile(fs2 , usersRelationsFile2DVector);
+    loadInFile(fs2 , usersRelations2DVector,2);
 
     fs2.close();
 
-    for (auto & i : usersRelationsFile2DVector){
-        User *u = users.search(i[0]);
-        User *u1 = users.search(i[1]);
-
+    for (int i=0;i<6;i++){
+        User *u = users.search(usersRelations2DVector[i][0]);
+        User *u1 = users.search(usersRelations2DVector[i][1]);
         u->getFriends().insert(u1);
         u1->getFriends().insert(u);
     }
@@ -162,14 +182,34 @@ int main()
                 if (u== nullptr){
                     cout << "user not found" <<endl;
                 }else{
-                    loggedInUser->getFriends().insert(u);
-                    u->getFriends().insert(loggedInUser);
-                    cout << "you are now friends" <<endl;
+                    if (loggedInUser->getFriends().search(fusername) == nullptr){
+                        loggedInUser->getFriends().insert(u);
+                        u->getFriends().insert(loggedInUser);
+                        cout << "You are now friends" <<endl;
+                    }else {
+                        cout << "You are already friends" <<endl;
+                    }
+
                 }
             }else if (userChoice =="4"){
-
+                cout<<"Enter your friend's username\n";
+                string fusername;
+                cin>>fusername;
+                User *u = loggedInUser->getFriends().search(fusername);
+                if(u != nullptr){
+                    loggedInUser->getFriends().deleteUser(fusername);
+                    u->getFriends().deleteUser(loggedInUser->getUsername());
+                    cout << "Done\n";
+                }
             }else if (userChoice == "5"){
-
+                int counter = 0;
+                for (int i = 0; i<users.getSize() && counter < 5; i++){
+                    User *u = users[i];
+                    if(u->getUsername() != loggedInUser->getUsername() && loggedInUser->getFriends().search(u->getUsername()) == nullptr){
+                        cout<<u->getUsername() << " , "<< u->getName()<<endl;
+                        counter++;
+                    }
+                }
             }else if (userChoice == "6"){
                 break;
             }
