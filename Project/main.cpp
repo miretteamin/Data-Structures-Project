@@ -3,7 +3,6 @@
 #include "User.h"
 #include "List.h"
 #include <fstream>
-#include <vector>
 
 using namespace std;
 
@@ -46,7 +45,7 @@ string trim(const string& s) {
 
 void userMenu(){
     cout << "1- List all friends\n" <<
-            "2- Search by username\n" <<
+            "2- Search for a friend by username\n" <<
             "3- Add friend\n" <<
             "4- Remove friend\n" <<
             "5- People you may know\n" <<
@@ -82,14 +81,10 @@ void loadInFile(ifstream& in, string  **data,int nColumns) {
     int counter =0;
     while (!in.eof()) {
         getline(in, tmp);
-//        cout << tmp <<endl;
         string *p = new string[nColumns] ;
         splitLine(tmp, ',', p);
-//        cout << p[0] << " "  << p[1] <<  <<endl;
         data[counter] = p ;
         counter+=1;
-
-
         tmp.clear();
     }
 }
@@ -98,25 +93,11 @@ void loadInFile(ifstream& in, string  **data,int nColumns) {
 int main()
 {
 	ios::sync_with_stdio(false), cin.tie(), cout.tie();
-//	TreapTree t;
-//	for (int i = 0; i < 50; i++)
-//	{
-//		User* u = new User("", "", "");
-//		string s = " ";
-//		s[0] = (char)i + 48;
-//		u->setUsername(s);
-//		t.insert(u);
-//	}
-//
-//	t.print2D();
-//	cout << "====================================" << endl;
-//	t.deleteUser("@");
-//	t.print2D();
 
     ifstream fs;
 
-//    int nLines = getNLines("..\\Project\\users.in");
-    int  nLines =9;
+    int nLines = getNLines("..\\Project\\users.in");
+//    int  nLines =9;
     string  **usersFile2DVector = new string*[nLines];
 
     fs.open("..\\Project\\users.in");
@@ -129,9 +110,9 @@ int main()
     }
 
     ifstream fs2 ;
-
+    nLines = getNLines("..\\Project\\usersrelations.in");
     fs2.open("..\\Project\\usersrelations.in");
-    string **usersRelations2DVector =  new string*[6];
+    string **usersRelations2DVector =  new string*[nLines];
 
     loadInFile(fs2 , usersRelations2DVector,2);
 
