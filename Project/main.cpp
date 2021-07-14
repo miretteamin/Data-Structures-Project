@@ -1,3 +1,10 @@
+/**
+ * @author Nader Atef 20190575 S28
+ * @author Paula Adel 20190139 S28
+ * Created on 11/7/2021
+ */
+
+
 #include <iostream>
 #include "TreapTree.h"
 #include "User.h"
@@ -23,7 +30,6 @@ int getNLines(const string& filePath){
 
 string rLeadingSpaces(const string& s)
 {
-//    string WHITESPACE = " \n\r\t\f\v";
     string WHITESPACE =" \n";
     size_t start = s.find_first_not_of(WHITESPACE);
     return (start == string::npos) ? "" : s.substr(start);
@@ -31,7 +37,6 @@ string rLeadingSpaces(const string& s)
 
 string rTrailingSpaces(const string& s)
 {
-//    string WHITESPACE = " \n\r\t\f\v";
     string WHITESPACE =" \n";
 
     size_t end = s.find_last_not_of(WHITESPACE);
