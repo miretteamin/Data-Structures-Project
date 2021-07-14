@@ -41,5 +41,6 @@ public:
 	void insert(string username, string name, string email);
 	void erase(string username);
 	User* search(string username) const;
+	User* operator[](int ind);
 };
 #endif 

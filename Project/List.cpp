@@ -127,3 +127,16 @@ List::search(string username) const {
 	}
 	return nullptr;
 }
+
+User* List::operator[](int ind)
+{
+	if (ind >= size) {
+		cout << "Array index out of bound, exiting";
+		exit(0);
+	}
+	ListNode* temp = head;
+	for (int i = 1; i <= ind; i++) {
+		temp = temp->getNext();
+	}
+	return temp->getUser();
+}
