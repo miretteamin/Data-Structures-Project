@@ -10,7 +10,7 @@
 #include "User.h"
 #include "List.h"
 #include <fstream>
-
+#include<string>
 using namespace std;
 
 int getNLines(const string& filePath){
