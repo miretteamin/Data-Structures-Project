@@ -1,3 +1,8 @@
+/*
+* @author Mirette Amin Danial	20190570 S10
+* @author Rana Ihab Ahmed Fahmy 20190207 S10
+* Created on 9/7/2021
+*/
 #include "List.h"
 
 ListNode::ListNode() {}
@@ -111,6 +116,7 @@ List::erase(string username) {
 			}
 			delete temp;
 			size--;
+			break;
 		}
 		temp = temp->getNext();
 	}
