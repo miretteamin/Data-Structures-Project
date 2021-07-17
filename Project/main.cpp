@@ -62,7 +62,7 @@ void splitLine(const string& s, char c, string *v) {
     int j = (int)s.find(c);
     int counter =0;
     while (j >= 0) {
-        string str = s.substr(i, j-i);
+        string str = trim(s.substr(i, j-i));
         v[counter] = str;
         counter +=1;
         i = ++j;
@@ -157,8 +157,8 @@ int main()
                 if (hisFriend == nullptr ) {
                     cout << "not found" <<endl;
                 }
-
-                cout << hisFriend->getUsername() << ", " << hisFriend->getName() << ", " << hisFriend->getEmail() << '\n';
+                else
+                    cout << hisFriend->getUsername() << ", " << hisFriend->getName() << ", " << hisFriend->getEmail() << '\n';
 
             }else if (userChoice == "3"){
                 cout << "Enter your friend's username\n" ;
